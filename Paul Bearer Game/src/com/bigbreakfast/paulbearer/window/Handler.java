@@ -10,7 +10,7 @@ import com.bigbreakfast.paulbearer.objects.Inventory;
 
 public class Handler {
 	
-	private final Inventory inventory = new Inventory();
+	private Inventory inventory;
 	
 	public LinkedList<GameObject> gObject = new LinkedList<GameObject>();
 	
@@ -36,12 +36,21 @@ public class Handler {
 	
 	public void addObject(GameObject gObject) {
 		
-		if (gObject.getId() == ObjectId.TextBox) {
-			//get some text from state machine / xml
-			//TextFeeder.getState();
-		}
+//		if (gObject.getId() == ObjectId.TextBox) {
+//			//get some text from state machine / xml
+//			//TextFeeder.getState();
+//		}
 		
 		this.gObject.add(gObject);
+	}
+	
+	public void addInventory(Inventory inventory) {
+		
+		this.inventory = inventory;
+	}
+	
+	public Inventory getInventory() {
+		return this.inventory;
 	}
 	
 	public void removeObject(GameObject gObject) {

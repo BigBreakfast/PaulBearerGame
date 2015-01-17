@@ -282,14 +282,19 @@ public class Game extends Canvas implements Runnable {
 	
 	private void LoadInventory() {
 		
-		Item i1 = new Item("Cockroach", 0, 1, 0, ObjectId.Item);
+		Item i1 = new Item("Cockroach x ", 0, 1, 0, ObjectId.Item);
 		inventory.addItem(i1);
 		
-		Item i2 = new Item("Half-Drank Beer", 2, 0, 0, ObjectId.Item);
+		Item i2 = new Item("Half-Drank Beer x ", 2, 0, 0, ObjectId.Item);
 		inventory.addItem(i2);
 		
-		Item i3 = new Item("A Lit Cigarette", 0, 0, 1, ObjectId.Item);
+		Item i3 = new Item("A Lit Cigarette x ", 0, 0, 1, ObjectId.Item);
 		inventory.addItem(i3);
+		
+		Item i4 = new Item("A Rock x ", 0, 0, 0, ObjectId.Item);
+		inventory.addItem(i4);
+		
+		handler.addInventory(inventory);
 		
 		for (int i = 0; i < inventory.getInventoryItems().size(); i++) {
 			System.out.println(inventory.getInventoryItems().get(i));

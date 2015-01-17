@@ -132,7 +132,7 @@ public class KeyInput extends KeyAdapter {
 						if (selection == 1) { //Inventory
 							System.out.println(handler.getTextBox("StartMenu").getStartMenuChoices().get(selection) + " Inventory Selected");
 							handler.removeObject(tempObject);
-							handler.addObject(new TextBox(playerX, playerY, "InventoryBox", ObjectId.TextBox));
+							handler.addObject(new TextBox(playerX, playerY, "InventoryBox", handler.getInventory().getInventoryItems(), ObjectId.TextBox));
 							break;
 						}
 						if (selection == 2) { //Urn

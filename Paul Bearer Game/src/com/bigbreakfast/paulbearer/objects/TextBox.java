@@ -54,6 +54,24 @@ public class TextBox extends GameObject {
 		if (boxType == "SaveConfirmationBox") text = "Save The Game?";
 	}
 	
+	public TextBox(float x, float y, String boxType, List<Item> inventoryItems, ObjectId id) {
+		super(x, y, id);
+		this.visible = true;
+		this.boxType = boxType;
+		this.setTextBoxType(boxType);
+		this.setInventoryItems(inventoryItems);
+		
+		if (boxType == "InventoryBox") {
+			text = "Inventory";
+		}
+		
+		
+		if (boxType == "DialogBox")	text = "Dialog";		
+		if (boxType == "Lootable") text = "Lootable";		
+		if (boxType == "QuitConfirmationBox") text = "Exit The Game?";		
+		if (boxType == "SaveConfirmationBox") text = "Save The Game?";
+	}
+	
 	public void render(Graphics g) {		
 		
 		drawTextBox(g);
@@ -281,10 +299,6 @@ public class TextBox extends GameObject {
 		return this.boxType;
 	}
 	
-//	public List<String> getInventoryItemNames() {
-//		return this.inventoryItemNames;
-//	}
-	
 	public List<String> getStartMenuChoices() {
 		return this.startMenuChoices;
 	}
@@ -317,16 +331,25 @@ public class TextBox extends GameObject {
 		g.setFont(formattedFont);
 	}
 	
-	public void setInventoryItems(List<Item> inventoryItems) {
+	private void setInventoryItems(List<Item> inventoryItems) {
 		
 		this.inventoryItems = new ArrayList<Item>(inventoryItems);
+		
+		setInventoryItemNames(inventoryItems);
 	}
 	
-	public List<String> getInventoryItemNames() {
+	private List<String> setInventoryItemNames(List<Item> inventoryItems) {
+		
 		for (int i = 0; i < inventoryItems.size(); i++) {
 			
 			this.inventoryItemNames.add(inventoryItems.get(i).getItemName());
 		}
+		
+		return this.inventoryItemNames;
+		
+	}
+	
+	public List<String> getInventoryItemNames() {
 		
 		return this.inventoryItemNames;
 	}
