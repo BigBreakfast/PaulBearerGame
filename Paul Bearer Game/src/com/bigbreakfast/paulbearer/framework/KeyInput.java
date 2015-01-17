@@ -48,6 +48,7 @@ public class KeyInput extends KeyAdapter {
 					//if it's a 'speakable' object (lootables, NPCs) open textbox with options
 					System.out.println("Player Colliding with " + player.getLootableItem().getId().name());
 					
+					//addItem removeItem
 					handler.getInventory().addItem(new Item("Small Key", 0, 0, 0, ObjectId.Item));
 					handler.removeObject(player.getLootableItem());
 					player.removeLootableItem();
