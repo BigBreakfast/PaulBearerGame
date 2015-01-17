@@ -13,6 +13,8 @@ import com.bigbreakfast.paulbearer.framework.ObjectId;
 import com.bigbreakfast.paulbearer.framework.Texture;
 import com.bigbreakfast.paulbearer.objects.Block;
 import com.bigbreakfast.paulbearer.objects.Floor;
+import com.bigbreakfast.paulbearer.objects.Inventory;
+import com.bigbreakfast.paulbearer.objects.Item;
 import com.bigbreakfast.paulbearer.objects.Player;
 import com.bigbreakfast.paulbearer.objects.TextBox;
 import com.bigbreakfast.paulbearer.objects.LootableItem;
@@ -34,6 +36,7 @@ public class Game extends Canvas implements Runnable {
 
 	// Object
 	Handler handler;
+	Inventory inventory;
 	Camera cam;
 	static Texture tex;
 	Sound sound;
@@ -58,6 +61,7 @@ public class Game extends Canvas implements Runnable {
 		textBox = loader.loadImage("/TextBox.png");
 		
 		handler = new Handler();
+		inventory = new Inventory();
 		
 		cam = new Camera(0, 0);
 		
@@ -244,6 +248,8 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		//Loads character last in order to have render priority (rendered last)
+		LoadInventory();
+		
 		LoadCharacter(image);
 		
 		//LoadTextBox(0);
@@ -267,11 +273,28 @@ public class Game extends Canvas implements Runnable {
 				int blue = (pixel) & 0xff;				
 				
 				if (red == 0 && green == 0 && blue == 255) { //blue pixel //player
-					handler.addObject(new Player(xx*32, yy*32, handler, ObjectId.Player));
+					handler.addObject(new Player(xx*32, yy*32, handler, inventory, ObjectId.Player));
 					System.out.println(xx*32 + " " + yy*32 + " ObjectId.Player");
 				}
 			}
 		}
+	}
+	
+	private void LoadInventory() {
+		
+		Item i1 = new Item("Cockroach", 0, 1, 0, ObjectId.Item);
+		inventory.addItem(i1);
+		
+		Item i2 = new Item("Half-Drank Beer", 2, 0, 0, ObjectId.Item);
+		inventory.addItem(i2);
+		
+		Item i3 = new Item("A Lit Cigarette", 0, 0, 1, ObjectId.Item);
+		inventory.addItem(i3);
+		
+		for (int i = 0; i < inventory.getInventoryItems().size(); i++) {
+			System.out.println(inventory.getInventoryItems().get(i));
+		}
+		
 	}
 	
 	//set up to work at load time. do i need?

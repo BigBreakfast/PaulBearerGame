@@ -47,6 +47,8 @@ public class KeyInput extends KeyAdapter {
 				{
 					//if it's a 'speakable' object (lootables, NPCs) open textbox with options
 					System.out.println("Player Colliding with " + player.getLootableItem().getId().name());
+					
+					
 				}
 				
 				//if player is not colliding with an object, open start menu
@@ -165,12 +167,12 @@ public class KeyInput extends KeyAdapter {
 					if (key == KeyEvent.VK_W) {
 						handler.getTextBox("InventoryBox").selected--;
 						if (handler.getTextBox("InventoryBox").selected < 0)
-							handler.getTextBox("InventoryBox").selected = handler.getTextBox("InventoryBox").getInventoryItems().size() - 1;
+							handler.getTextBox("InventoryBox").selected = handler.getTextBox("InventoryBox").getInventoryItemNames().size() - 1;
 					}
 					
 					if (key == KeyEvent.VK_S) {
 						handler.getTextBox("InventoryBox").selected++;
-						if (handler.getTextBox("InventoryBox").selected >= handler.getTextBox("InventoryBox").getInventoryItems().size())	
+						if (handler.getTextBox("InventoryBox").selected >= handler.getTextBox("InventoryBox").getInventoryItemNames().size())	
 							handler.getTextBox("InventoryBox").selected = 0;
 					}
 					
@@ -187,10 +189,10 @@ public class KeyInput extends KeyAdapter {
 						int selection = handler.getTextBox("InventoryBox").selected;
 						System.out.println(selection);
 						
-						for (int ii = 0; ii < handler.getTextBox("InventoryBox").getInventoryItems().size(); ii++) {
+						for (int ii = 0; ii < handler.getTextBox("InventoryBox").getInventoryItemNames().size(); ii++) {
 							
 							if (selection == ii) {
-								System.out.println(handler.getTextBox("InventoryBox").getInventoryItems().get(ii) + " Selected");
+								System.out.println(handler.getTextBox("InventoryBox").getInventoryItemNames().get(ii) + " Selected");
 								handler.addObject(new TextBox(playerX, playerY, "InventoryOptionsBox", ObjectId.TextBox));
 								break;
 							}

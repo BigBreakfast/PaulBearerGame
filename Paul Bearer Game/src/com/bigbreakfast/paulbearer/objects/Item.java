@@ -14,34 +14,66 @@ import com.bigbreakfast.paulbearer.window.Handler;
 //This object is not rendered and is instead added to the inventory list of items.
 //This object should also never be removed from the handler unless the Inventory says so.
 
-public class Item extends GameObject {
+public class Item {
 	
-	Handler handler;
+	//Handler handler;
 	
 	private String itemName;
 	private int quantity;
 	//private List<ItemAttributes> itemAttributes;
 	private String description;
+	
+	private int strength;
+	private int misery;
+	private int intelligence;
 
-	public Item(float x, float y, String itemName, Handler handler, ObjectId id) {
-		super(x, y, id);
-		this.handler = handler;
+	//Eventually a list of <attributes> will be passed
+	public Item(String itemName, int strength, int misery, int intelligence, ObjectId id) {
+		
+		this.itemName = itemName;
+		this.strength = strength;
+		this.misery = misery;
+		this.intelligence = intelligence;
+		
+	}
+
+	public int getStrength() {
+		return strength;
+	}
+
+	public void setStrength(int strength) {
+		this.strength = strength;
+	}
+
+	public int getMisery() {
+		return misery;
+	}
+
+	public void setMisery(int misery) {
+		this.misery = misery;
+	}
+
+	public int getIntelligence() {
+		return intelligence;
+	}
+
+	public void setIntelligence(int intelligence) {
+		this.intelligence = intelligence;
+	}
+
+	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
 
-	@Override
-	public Rectangle getBounds() {
-
-		return new Rectangle((int) x, (int) y, 32, 32);
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void tick(LinkedList<GameObject> gObject) {
 		// TODO Auto-generated method stub
 		

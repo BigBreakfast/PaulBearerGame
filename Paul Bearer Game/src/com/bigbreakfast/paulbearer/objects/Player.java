@@ -19,6 +19,7 @@ public class Player extends GameObject {
 	private float width = 32, height = 32;
 
 	private Handler handler;
+	private Inventory inventory;
 	private LootableItem lootableItem;
 
 	Texture tex = Game.getInstance();
@@ -31,7 +32,7 @@ public class Player extends GameObject {
 	private Animation playerIdleLeft;
 	private Animation playerIdleDown;
 
-	public Player(float x, float y, Handler handler, ObjectId id) {
+	public Player(float x, float y, Handler handler, Inventory inventory, ObjectId id) {
 		super(x, y, id);
 		this.handler = handler;
 
@@ -103,6 +104,7 @@ public class Player extends GameObject {
 			}
 		}
 		
+		//Just for viewing hitboxes on player
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.RED);
 		g2d.draw(getBounds());
@@ -204,6 +206,10 @@ public class Player extends GameObject {
 	
 	public LootableItem getLootableItem() {
 		return this.lootableItem;
+	}
+	
+	public Inventory getInventory() {
+		return this.inventory;
 	}
 
 	public Rectangle getBounds() {

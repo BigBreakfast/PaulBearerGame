@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +23,9 @@ public class TextBox extends GameObject {
 	private final List<String> inventoryOptions = Arrays.asList("Use", "Equip", "Toss");
 	private final List<String> quitConfirmationOptions = Arrays.asList("Quit", "Cancel");
 	private final List<String> saveConfirmationOptions = Arrays.asList("Save", "Cancel");
-	private List<String> inventoryItems = Arrays.asList("Cockroach", "Lit Cigarette", "Half-Drank Beer", "Some Old Coins");
+	//private List<String> inventoryItems = Arrays.asList("Cockroach", "Lit Cigarette", "Half-Drank Beer", "Some Old Coins");
+	private List<String> inventoryItemNames = new ArrayList<String>();
+	private List<Item> inventoryItems;
 	
 	public int selected = 0;
 	private boolean visible;
@@ -40,9 +43,13 @@ public class TextBox extends GameObject {
 		this.boxType = boxType;
 		this.setTextBoxType(boxType);
 		
+		if (boxType == "InventoryBox") {
+			text = "Inventory";
+		}
+		
+		
 		if (boxType == "DialogBox")	text = "Dialog";		
 		if (boxType == "Lootable") text = "Lootable";		
-		if (boxType == "InventoryBox") text = "Inventory";
 		if (boxType == "QuitConfirmationBox") text = "Exit The Game?";		
 		if (boxType == "SaveConfirmationBox") text = "Save The Game?";
 	}
@@ -84,7 +91,9 @@ public class TextBox extends GameObject {
 				if (i == this.selected)	g.setColor(Color.YELLOW);
 				else g.setColor(fontColor);
 				
-				g.drawString(inventoryItems.get(i), calcXPosition("ListChoices", x), calcYPosition("ListChoices", y) + ((i + 1) *32));
+				//g.drawString(inventoryItems.get(i), calcXPosition("ListChoices", x), calcYPosition("ListChoices", y) + ((i + 1) *32));
+				g.drawString(inventoryItemNames.get(i), calcXPosition("ListChoices", x), calcYPosition("ListChoices", y) + ((i + 1) *32));
+
 			}
 		}
 		else if (this.boxType == "UrnBox") {}
@@ -272,9 +281,9 @@ public class TextBox extends GameObject {
 		return this.boxType;
 	}
 	
-	public List<String> getInventoryItems() {
-		return this.inventoryItems;
-	}
+//	public List<String> getInventoryItemNames() {
+//		return this.inventoryItemNames;
+//	}
 	
 	public List<String> getStartMenuChoices() {
 		return this.startMenuChoices;
@@ -306,6 +315,20 @@ public class TextBox extends GameObject {
 				calcHeight(this.boxType));
 		g.setColor(fontColor);
 		g.setFont(formattedFont);
+	}
+	
+	public void setInventoryItems(List<Item> inventoryItems) {
+		
+		this.inventoryItems = new ArrayList<Item>(inventoryItems);
+	}
+	
+	public List<String> getInventoryItemNames() {
+		for (int i = 0; i < inventoryItems.size(); i++) {
+			
+			this.inventoryItemNames.add(inventoryItems.get(i).getItemName());
+		}
+		
+		return this.inventoryItemNames;
 	}
 }
 
