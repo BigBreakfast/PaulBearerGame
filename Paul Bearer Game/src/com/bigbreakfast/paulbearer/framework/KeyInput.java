@@ -3,6 +3,7 @@ package com.bigbreakfast.paulbearer.framework;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import com.bigbreakfast.paulbearer.objects.Player;
 import com.bigbreakfast.paulbearer.objects.TextBox;
 import com.bigbreakfast.paulbearer.window.Handler;
 
@@ -24,11 +25,15 @@ public class KeyInput extends KeyAdapter {
 			
 			if(tempObject.getId() == ObjectId.Player) {
 				
-				playerX = tempObject.getX();
-				playerY = tempObject.getY();				
+				Player player = (Player) tempObject;
+				
+//				playerX = tempObject.getX();
+//				playerY = tempObject.getY();	
+				
+				playerX = player.getX();
+				playerY = player.getY();
 						
 				if(handler.hasTextBox() == 0) {
-					System.out.println("hasTextBox == " +handler.hasTextBox());
 					
 					if(key == KeyEvent.VK_D) tempObject.setVelX(4);  //move right
 					if(key == KeyEvent.VK_A) tempObject.setVelX(-4); //move left
@@ -37,14 +42,16 @@ public class KeyInput extends KeyAdapter {
 				}
 				
 				//if player is colliding with an object
-				if(key == KeyEvent.VK_E && tempObject.isColliding())
+				//if(key == KeyEvent.VK_E && tempObject.isColliding())
+				if(key == KeyEvent.VK_E && player.isColliding())
 				{
 					//if it's a 'speakable' object (lootables, NPCs) open textbox with options
-					System.out.println("Player Colliding");
+					System.out.println("Player Colliding with " + player.getLootableItem().getId().name());
 				}
 				
 				//if player is not colliding with an object, open start menu
-				else if (key == KeyEvent.VK_SPACE && !tempObject.isColliding()) {
+				//else if (key == KeyEvent.VK_SPACE && !tempObject.isColliding()) {
+				else if (key == KeyEvent.VK_SPACE && !player.isColliding()) {
 					
 					if (handler.hasTextBox() == 0) {
 						handler.addObject(new TextBox(playerX, playerY, "StartMenu", ObjectId.TextBox));
@@ -69,7 +76,7 @@ public class KeyInput extends KeyAdapter {
 					
 					if (tempObject.isVisible) {
 						handler.removeObject(tempObject);
-						System.out.println("removeObject(" +tempObject.getId().toString()+ "");
+						System.out.println("removeObject(" +tempObject.getId().toString()+ " )");
 					}
 					tempObject.isVisible = !tempObject.isVisible;
 //					System.out.print("tempObject: " +tempObject.getId().toString()+ ".isVisible = " +tempObject.isVisible);
@@ -79,7 +86,7 @@ public class KeyInput extends KeyAdapter {
 					
 					if (tempObject.isVisible) {
 						handler.removeObject(tempObject);
-						System.out.println("removeObject(" +tempObject.getId().toString()+ "");
+						System.out.println("removeObject(" +tempObject.getId().toString()+ " )");
 					}
 					tempObject.isVisible = !tempObject.isVisible;
 					System.out.print("tempObject: " +tempObject.getId().toString()+ ".isVisible = " +tempObject.isVisible);

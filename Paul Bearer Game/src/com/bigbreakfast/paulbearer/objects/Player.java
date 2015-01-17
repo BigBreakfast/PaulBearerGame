@@ -19,6 +19,7 @@ public class Player extends GameObject {
 	private float width = 32, height = 32;
 
 	private Handler handler;
+	private LootableItem lootableItem;
 
 	Texture tex = Game.getInstance();
 
@@ -49,15 +50,11 @@ public class Player extends GameObject {
 
 		if (velX < 0)
 			facing = Facing.Left;
-			//facing = -1;
 		else if (velX > 0)
-			//facing = 1;
 			facing = Facing.Right;
 		else if (velY < 0)
-			//facing = 2;
 			facing = Facing.Up;
 		else if (velY > 0)
-			//facing = 3;
 			facing = Facing.Down;
 
 		Collision(gObject);
@@ -81,7 +78,8 @@ public class Player extends GameObject {
 		}
 		
 		if (velY != 0) {
-			if (facing == Facing.Up) {}
+			if (facing == Facing.Up)
+				g.drawImage(tex.player[4], (int) x, (int) y, null);
 				//playerWalkUp.drawAnimation(g, (int)x, (int) y);
 			else if (facing == Facing.Down)
 				playerWalkDown.drawAnimation(g, (int) x, (int) y);
@@ -115,216 +113,98 @@ public class Player extends GameObject {
 
 	private void Collision(LinkedList<GameObject> gObject) {
 		for (int i = 0; i < gObject.size(); i++) {
+			
 			GameObject tempObject = handler.gObject.get(i);
 
 			if (tempObject.getId() == ObjectId.Block) {
 
 				// Top
-				if (getBoundsTop().intersects(tempObject.getBounds())) {
-
-					y = tempObject.getY() + 32;
-
-					velY = 0;
-					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("Colliding = " + this.isColliding() + " " + this.id);
-				}
-				
-				//trying to interacting
-//				if ((y == (tempObject.getY()) + 32) && (x == (tempObject.getX())) && facing == 2) {
-//					System.out.println("Player interactable with block: " +tempObject.getId());
-//					this.setInteracting(true);
-//				}
-				
-				else {
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-					//System.out.println("this.isColliding = " +this.isColliding());
-					
-				}
+				if (getBoundsTop().intersects(tempObject.getBounds())) { y = tempObject.getY() + 32; velY = 0; }
 
 				// Bottom
-				if (getBounds().intersects(tempObject.getBounds())) {
-
-					y = tempObject.getY() - height;
-
-					velY = 0;
-					falling = false;
-					jumping = false;
-					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("Colliding = " + this.isColliding() + " " + this.id);
-
-				} else {
-					falling = true;
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-					
-				}
+				if (getBounds().intersects(tempObject.getBounds())) { y = tempObject.getY() - height; velY = 0; }
 				
 				// Right
-				if (getBoundsRight().intersects(tempObject.getBounds())) {
-
-					x = tempObject.getX() - width;
-
-					velY = 0;
-					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("Colliding = " + this.isColliding() + " " + this.id);
-				}
-				
-				else {
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-					
-				}
+				if (getBoundsRight().intersects(tempObject.getBounds())) { x = tempObject.getX() - width; velY = 0; }
 				
 				// Left
-				if (getBoundsLeft().intersects(tempObject.getBounds())) {
-
-					x = tempObject.getX() + width;
-
-					velY = 0;
-					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("Colliding = " + this.isColliding() + " " + this.id);
-				}
+				if (getBoundsLeft().intersects(tempObject.getBounds())) { x = tempObject.getX() + width; velY = 0; }
 				
-				else {
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-				}
 			}
 			
 			//LootableItem
 			if (tempObject.getId() == ObjectId.LootableItem) {
 				
 				//top
-				if (getBoundsTop().intersects(tempObject.getBounds())) {
-					y = tempObject.getY() + 32;
-					velY = 0;
-
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-				}
-				else {
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-					
-				}
-
-				// Top
-				if (collidingWithLootableItem(tempObject, "Top")) {
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("HITTING TOP");
-//					System.out.println("getBoundsTop().getMinY() - 5)" + (getBoundsTop().getMinY() - 5) + "tempObject.getBounds().getMaxY()" + tempObject.getBounds().getMaxY());
-//					System.out.println("getBoundsLeft().getMinX() - 5)" + (getBoundsLeft().getMinX() - 5) + "tempObject.getBounds().getMinX()" + tempObject.getBounds().getMinX());
-//					System.out.println("getBoundsRight().getMinX() - 5)" + (getBoundsRight().getMinX() - 5) + "tempObject.getBounds().getMaxX()" + tempObject.getBounds().getMaxX());
-//					System.out.println(this.id + " Top Colliding = " + this.isColliding() + " " + tempObject.getId());
-				}
+				if (getBoundsTop().intersects(tempObject.getBounds())) { y = tempObject.getY() + 32; velY = 0; }
 				
 				//left
-				if (getBoundsLeft().intersects(tempObject.getBounds())) {
-
-					x = tempObject.getX() + width;
-
-					//velY = 0;
-					velX = 0;
-					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-				}
-				else {
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-				}
+				if (getBoundsLeft().intersects(tempObject.getBounds())) { x = tempObject.getX() + width; velX = 0; }
 				
-				//Left
-				if (collidingWithLootableItem(tempObject, "Left")) {
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("HITTING LEFT");
-//					System.out.println("getBoundsTop().getMinY() - 5)" + (getBoundsTop().getMinY() - 5) + "tempObject.getBounds().getMaxY()" + tempObject.getBounds().getMaxY());
-//					System.out.println("getBoundsLeft().getMinX() - 5)" + (getBoundsLeft().getMinX() - 5) + "tempObject.getBounds().getMinX()" + tempObject.getBounds().getMinX());
-//					System.out.println("getBoundsRight().getMinX() - 5)" + (getBoundsRight().getMinX() - 5) + "tempObject.getBounds().getMaxX()" + tempObject.getBounds().getMaxX());
-//					System.out.println(this.id + " Top Colliding = " + this.isColliding() + " " + tempObject.getId());
-				}
-
 				// Bottom
-				if (getBounds().intersects(tempObject.getBounds())) {
-
-					y = tempObject.getY() - height;
-					velY = 0;
-					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("Colliding = " + this.isColliding() + " " + this.id);
-
-				} else {
-					falling = true;
-					//tempObject.setColliding(false);
-					this.setColliding(false);
-					
-				}
-				
-				//Bottom
-				if (collidingWithLootableItem(tempObject, "Bottom")) {
-					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("HITTING BOTTOM");
-//					System.out.println("getBoundsTop().getMinY() - 5)" + (getBoundsTop().getMinY() - 5) + "tempObject.getBounds().getMaxY()" + tempObject.getBounds().getMaxY());
-//					System.out.println("getBoundsLeft().getMinX() - 5)" + (getBoundsLeft().getMinX() - 5) + "tempObject.getBounds().getMinX()" + tempObject.getBounds().getMinX());
-//					System.out.println("getBoundsRight().getMinX() - 5)" + (getBoundsRight().getMinX() - 5) + "tempObject.getBounds().getMaxX()" + tempObject.getBounds().getMaxX());
-//					System.out.println(this.id + " Top Colliding = " + this.isColliding() + " " + tempObject.getId());
-				}
+				if (getBounds().intersects(tempObject.getBounds())) { y = tempObject.getY() - height; velY = 0; }
 				
 				// Right
-				if (getBoundsRight().intersects(tempObject.getBounds())) {
+				if (getBoundsRight().intersects(tempObject.getBounds())) { x = tempObject.getX() - width; velX = 0; }
+				
+				else { //collidingWithLootableItem
 
-					x = tempObject.getX() - width;
-					velX = 0;
+					// Top
+					if (collidingWithLootableItem(tempObject, "Top")) {
+						
+						this.lootableItem = (LootableItem) tempObject;
+						this.setColliding(true);
+
+						//System.out.println("HITTING TOP");						
+						//System.out.println("this.lootableItem = " + this.lootableItem);
+					}
 					
-					//tempObject.setColliding(true);
-					this.setColliding(true);
+					//Left
+					else if (collidingWithLootableItem(tempObject, "Left")) {
+						
+						this.lootableItem = (LootableItem) tempObject;
+						this.setColliding(true);
+
+						//System.out.println("HITTING LEFT");						
+						//System.out.println("this.lootableItem = " + this.lootableItem);
+					}
 					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("Colliding = " + this.isColliding() + " " + this.id);
-				}
-				
-				else {
-					//tempObject.setColliding(false);
-					this.setColliding(false);
+					//Bottom
+					else if (collidingWithLootableItem(tempObject, "Bottom")) {
+						
+						this.lootableItem = (LootableItem) tempObject;
+						this.setColliding(true);
+
+						//System.out.println("HITTING BOTTOM");						
+						//System.out.println("this.lootableItem = " + this.lootableItem);
+					}					
 					
-				}
-				
-				//Right
-				if (collidingWithLootableItem(tempObject, "Right")) {
+					//Right
+					else if (collidingWithLootableItem(tempObject, "Right")) {
+						
+						this.lootableItem = (LootableItem) tempObject;
+						this.setColliding(true);
+
+						//System.out.println("HITTING RIGHT");
+						//System.out.println("this.lootableItem = " + this.lootableItem);
+					}
 					
-					//System.out.println("Colliding = " + tempObject.isColliding() + " " + tempObject.getId());
-					System.out.println("HITTING RIGHT");
-//					System.out.println("getBoundsTop().getMinY() - 5)" + (getBoundsTop().getMinY() - 5) + "tempObject.getBounds().getMaxY()" + tempObject.getBounds().getMaxY());
-//					System.out.println("getBoundsLeft().getMinX() - 5)" + (getBoundsLeft().getMinX() - 5) + "tempObject.getBounds().getMinX()" + tempObject.getBounds().getMinX());
-//					System.out.println("getBoundsRight().getMinX() - 5)" + (getBoundsRight().getMinX() - 5) + "tempObject.getBounds().getMaxX()" + tempObject.getBounds().getMaxX());
-//					System.out.println(this.id + " Top Colliding = " + this.isColliding() + " " + tempObject.getId());
+					//Set player's lootableItem = null, he is no longer colliding with it
+					else {
+	
+						this.lootableItem = null;
+						this.setColliding(false);
+						
+						//System.out.println("this.lootableItem = " + this.lootableItem);
+					}
 				}
 			}
 		}
-	}	
+	}
+	
+	public LootableItem getLootableItem() {
+		return this.lootableItem;
+	}
 
 	public Rectangle getBounds() {
 		return new Rectangle((int) ((int) x + (width / 2) - ((width / 2) / 2)),
