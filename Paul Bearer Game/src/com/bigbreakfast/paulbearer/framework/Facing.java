@@ -14,11 +14,11 @@ public enum Facing {
 	}
 	
 	public int getCode() {
-        return code;
+		return code;
 	}
 
-    public void setCode(int code) {
-        this.code = code;
-    }	
+	public void setCode(int code) {
+		this.code = code;
+	}	
 
 }
