@@ -35,6 +35,7 @@ public class Player extends GameObject {
 	public Player(float x, float y, Handler handler, Inventory inventory, ObjectId id) {
 		super(x, y, id);
 		this.handler = handler;
+		this.inventory = inventory;
 
 		playerWalkRight = new Animation(15, tex.player[0], tex.player[1]);
 		playerWalkLeft = new Animation(15, tex.player[2], tex.player[3]);
@@ -105,12 +106,12 @@ public class Player extends GameObject {
 		}
 		
 		//Just for viewing hitboxes on player
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.RED);
-		g2d.draw(getBounds());
-		g2d.draw(getBoundsLeft());
-		g2d.draw(getBoundsRight());
-		g2d.draw(getBoundsTop());
+//		Graphics2D g2d = (Graphics2D) g;
+//		g2d.setColor(Color.RED);
+//		g2d.draw(getBounds());
+//		g2d.draw(getBoundsLeft());
+//		g2d.draw(getBoundsRight());
+//		g2d.draw(getBoundsTop());
 	}
 
 	private void Collision(LinkedList<GameObject> gObject) {
@@ -193,15 +194,22 @@ public class Player extends GameObject {
 					
 					//Set player's lootableItem = null, he is no longer colliding with it
 					else {
+						
+						removeLootableItem();
 	
-						this.lootableItem = null;
-						this.setColliding(false);
+//						this.lootableItem = null;
+//						this.setColliding(false);
 						
 						//System.out.println("this.lootableItem = " + this.lootableItem);
 					}
 				}
 			}
 		}
+	}
+	
+	public void removeLootableItem() {
+		this.lootableItem = null;
+		this.setColliding(false);
 	}
 	
 	public LootableItem getLootableItem() {

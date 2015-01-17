@@ -3,6 +3,7 @@ package com.bigbreakfast.paulbearer.framework;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import com.bigbreakfast.paulbearer.objects.Item;
 import com.bigbreakfast.paulbearer.objects.Player;
 import com.bigbreakfast.paulbearer.objects.TextBox;
 import com.bigbreakfast.paulbearer.window.Handler;
@@ -42,18 +43,19 @@ public class KeyInput extends KeyAdapter {
 				}
 				
 				//if player is colliding with an object
-				//if(key == KeyEvent.VK_E && tempObject.isColliding())
 				if(key == KeyEvent.VK_E && player.isColliding())
 				{
 					//if it's a 'speakable' object (lootables, NPCs) open textbox with options
 					System.out.println("Player Colliding with " + player.getLootableItem().getId().name());
 					
+					handler.getInventory().addItem(new Item("Small Key", 0, 0, 0, ObjectId.Item));
+					handler.removeObject(player.getLootableItem());
+					player.removeLootableItem();
 					
 				}
 				
 				//if player is not colliding with an object, open start menu
-				//else if (key == KeyEvent.VK_SPACE && !tempObject.isColliding()) {
-				else if (key == KeyEvent.VK_SPACE && !player.isColliding()) {
+				else if (key == KeyEvent.VK_SPACE) {
 					
 					if (handler.hasTextBox() == 0) {
 						handler.addObject(new TextBox(playerX, playerY, "StartMenu", ObjectId.TextBox));
