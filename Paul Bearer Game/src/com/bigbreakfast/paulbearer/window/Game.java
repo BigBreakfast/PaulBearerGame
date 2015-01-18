@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.bigbreakfast.paulbearer.framework.KeyInput;
 import com.bigbreakfast.paulbearer.framework.ObjectId;
+import com.bigbreakfast.paulbearer.framework.State;
 import com.bigbreakfast.paulbearer.framework.Texture;
 import com.bigbreakfast.paulbearer.objects.Block;
 import com.bigbreakfast.paulbearer.objects.Floor;
@@ -39,18 +40,11 @@ public class Game extends Canvas implements Runnable {
 	Inventory inventory;
 	Camera cam;
 	static Texture tex;
-	static STATE State = STATE.MENU;
+	static State state;
 	Sound sound;
-	Menu menu;
+	static Menu menu;
 
 	Random rand = new Random();
-	
-	private enum STATE {
-		MENU,
-		GAME
-	}
-	
-	//private STATE State = 
 
 	private void init() {
 		requestFocus();
@@ -65,8 +59,15 @@ public class Game extends Canvas implements Runnable {
 		
 		backgroundImg = loader.loadImage("/Cinematic 1 - Paul.jpg"); //loading background
 		menuImg = loader.loadImage("/TitleScreen.png"); //loading menu
-		
 		textBox = loader.loadImage("/TextBox.png");
+		
+		state = State.MENU;
+		
+		try {
+			sound = new Sound();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		handler = new Handler();
 		cam = new Camera(0, 0);
@@ -76,13 +77,13 @@ public class Game extends Canvas implements Runnable {
 		
 		LoadImageLevel(level);
 		
-		if (State == STATE.GAME) {
-			try {
-				sound.playSound();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+//		if (state == State.GAME) {
+//			try {
+//				sound.playSound();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 		
 		this.addKeyListener(new KeyInput(handler));
 	}
@@ -137,7 +138,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		if (State == STATE.GAME) {
+		if (state == State.GAME) {
 		
 			handler.tick();
 			
@@ -146,6 +147,16 @@ public class Game extends Canvas implements Runnable {
 				if(handler.gObject.get(i).getId() == ObjectId.Player)
 					cam.tick(handler.gObject.get(i));
 					
+			}
+			
+			try {
+				
+				//if (sound.isPlaying())
+					sound.playSound();
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -162,7 +173,7 @@ public class Game extends Canvas implements Runnable {
 		
 		Graphics2D g2d = (Graphics2D) g;
 
-		if (State == STATE.GAME) {
+		if (state == State.GAME) {
 			// //////////////////////////////////
 			
 			// DRAW HERE
@@ -181,7 +192,7 @@ public class Game extends Canvas implements Runnable {
 			// //////////////////////////////////
 		}
 		
-		else if (State == STATE.MENU) {
+		else if (state == State.MENU) {
 			menu.render(g);
 		}
 
@@ -301,16 +312,16 @@ public class Game extends Canvas implements Runnable {
 	
 	private void LoadInventory() {
 		
-		Item i1 = new Item("Cockroach x ", 0, 1, 0, ObjectId.Item);
+		Item i1 = new Item("Cockroach", 20, 0, 1, 0, ObjectId.Item);
 		inventory.addItem(i1);
 		
-		Item i2 = new Item("Half-Drank Beer x ", 2, 0, 0, ObjectId.Item);
+		Item i2 = new Item("Half-Drank Beer", 1, 2, 0, 0, ObjectId.Item);
 		inventory.addItem(i2);
 		
-		Item i3 = new Item("A Lit Cigarette x ", 0, 0, 1, ObjectId.Item);
+		Item i3 = new Item("A Lit Cigarette", 1, 0, 0, 1, ObjectId.Item);
 		inventory.addItem(i3);
 		
-		Item i4 = new Item("A Rock x ", 0, 0, 0, ObjectId.Item);
+		Item i4 = new Item("A Rock", 1, 0, 0, 0, ObjectId.Item);
 		inventory.addItem(i4);
 		
 		handler.addInventory(inventory);
@@ -350,8 +361,16 @@ public class Game extends Canvas implements Runnable {
 		return tex;
 	}
 	
-	public STATE getState() {
-		return State;
+	public static State getState() {
+		return state;
+	}
+	
+	public static void setState(State inState) {
+		state = inState;
+	}
+	
+	public static Menu getMenu() {
+		return menu;
 	}
 
 	public static void main(String args[]) {

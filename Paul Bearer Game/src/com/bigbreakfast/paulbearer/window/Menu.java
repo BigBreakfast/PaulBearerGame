@@ -24,7 +24,7 @@ public class Menu {
 	
 	private BufferedImage menuImg;
 	
-	private int selected;
+	public int selected;
 	private List<String> menuOptions = Arrays.asList("Start", "Load", "Quit");
 	
 	public Menu(BufferedImage menuImg) {
@@ -60,15 +60,18 @@ public class Menu {
 			String currentOption = menuOptions.get(i);
 			
 			if (currentOption == "Start") g.drawString(currentOption, 362, 320);
-			if (currentOption == "Load") g.drawString(currentOption, 369, 352);
-			if (currentOption == "Quit") g.drawString(currentOption, 371, 384);
+			if (currentOption == "Load") g.drawString(currentOption, 368, 352);
+			if (currentOption == "Quit") g.drawString(currentOption, 370, 384);
 			
-		}
-		
+		}		
 		
 //		g2d.setColor(Color.RED);
 //		g2d.draw(startButton);
 //		g2d.draw(quitButton);
+	}
+	
+	public List<String> getMenuOptions() {
+		return this.menuOptions;
 	}
 
 }

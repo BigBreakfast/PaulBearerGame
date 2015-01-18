@@ -28,12 +28,13 @@ public class Item {
 	private int intelligence;
 
 	//Eventually a list of <attributes> will be passed
-	public Item(String itemName, int strength, int misery, int intelligence, ObjectId id) {
+	public Item(String itemName, int quantity, int strength, int misery, int intelligence, ObjectId id) {
 		
 		this.itemName = itemName;
 		this.strength = strength;
 		this.misery = misery;
 		this.intelligence = intelligence;
+		this.quantity = quantity;
 		
 	}
 

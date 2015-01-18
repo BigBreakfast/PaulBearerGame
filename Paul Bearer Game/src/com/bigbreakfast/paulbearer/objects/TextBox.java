@@ -23,7 +23,6 @@ public class TextBox extends GameObject {
 	private final List<String> inventoryOptions = Arrays.asList("Use", "Equip", "Toss");
 	private final List<String> quitConfirmationOptions = Arrays.asList("Quit", "Cancel");
 	private final List<String> saveConfirmationOptions = Arrays.asList("Save", "Cancel");
-	//private List<String> inventoryItems = Arrays.asList("Cockroach", "Lit Cigarette", "Half-Drank Beer", "Some Old Coins");
 	private List<String> inventoryItemNames = new ArrayList<String>();
 	private List<Item> inventoryItems;
 	
@@ -66,7 +65,7 @@ public class TextBox extends GameObject {
 		}
 		
 		
-		if (boxType == "DialogBox")	text = "Dialog";		
+		if (boxType == "DialogBox")	text = "Paul found " + inventoryItems.get(inventoryItems.size() - 1).getItemName() + "!";		
 		if (boxType == "Lootable") text = "Lootable";		
 		if (boxType == "QuitConfirmationBox") text = "Exit The Game?";		
 		if (boxType == "SaveConfirmationBox") text = "Save The Game?";
@@ -91,6 +90,8 @@ public class TextBox extends GameObject {
 		
 		//DialogBox
 		else if (this.boxType == "DialogBox") {
+		
+			
 			
 			//Text
 			g.drawString(text, calcXPosition("MAINTEXT", x), calcYPosition("MAINTEXT", y));
@@ -110,7 +111,7 @@ public class TextBox extends GameObject {
 				else g.setColor(fontColor);
 				
 				//g.drawString(inventoryItems.get(i), calcXPosition("ListChoices", x), calcYPosition("ListChoices", y) + ((i + 1) *32));
-				g.drawString(inventoryItemNames.get(i), calcXPosition("ListChoices", x), calcYPosition("ListChoices", y) + ((i + 1) *32));
+				g.drawString(inventoryItemNames.get(i) + " [" + inventoryItems.get(i).getQuantity() + "]", calcXPosition("ListChoices", x), calcYPosition("ListChoices", y) + ((i + 1) *32));
 
 			}
 		}

@@ -14,14 +14,27 @@ import javax.swing.JFileChooser;
 
 public class Sound {
 	
+	static BigClip clip = new BigClip();
+	static AudioInputStream ais;
+	
+	public Sound () throws Exception {
+		ais = AudioSystem.getAudioInputStream(new File("/Users/pj_mcmanus10/Video Game Code/Platformer/sound/easy now [16-bit].wav"));
+		//clip.open(ais);
+	}
+	
 	public static void playSound() throws Exception {
-		BigClip clip = new BigClip();
-        AudioInputStream ais = AudioSystem.getAudioInputStream(new File("/Users/pj_mcmanus10/Video Game Code/Platformer/sound/easy now [16-bit].wav"));
-        //AudioInputStream ais = AudioSystem.getAudioInputStream(new File("/Users/pj_mcmanus10/Video Game Code/Paul Bearer Game/Paul Bearer Game/sound/The Undertaker 1st WWF Theme - Funeral Dirge.mp3"));
-        clip.open(ais);
-        clip.loop(clip.LOOP_CONTINUOUSLY);
-        //if (!clip.isActive()) clip.start();
-        	//clip.loop(clip.LOOP_CONTINUOUSLY);
+		
+		clip.open(ais);
+		clip.start();
+		
+		//BigClip clip = new BigClip();
+//        AudioInputStream ais = AudioSystem.getAudioInputStream(new File("/Users/pj_mcmanus10/Video Game Code/Platformer/sound/easy now [16-bit].wav"));
+//        clip.open(ais);
+//        clip.loop(clip.LOOP_CONTINUOUSLY);
+	}
+	
+	public boolean isPlaying() {
+		return clip.isActive();
 	}
 
 	/*
