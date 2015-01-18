@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import com.bigbreakfast.paulbearer.objects.Item;
 import com.bigbreakfast.paulbearer.objects.Player;
 import com.bigbreakfast.paulbearer.objects.TextBox;
+import com.bigbreakfast.paulbearer.window.Game;
 import com.bigbreakfast.paulbearer.window.Handler;
 
 public class KeyInput extends KeyAdapter {
@@ -20,6 +21,8 @@ public class KeyInput extends KeyAdapter {
 
 	public void keyPressed(KeyEvent e){
 		int key = e.getKeyCode();
+		
+		//if (Game.getState() ==)
 		
 		for(int i = 0; i < handler.gObject.size(); i++){
 			GameObject tempObject = handler.gObject.get(i);

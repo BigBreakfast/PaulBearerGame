@@ -32,16 +32,25 @@ public class Game extends Canvas implements Runnable {
 	
 	public static int WIDTH, HEIGHT;
 	
-	private BufferedImage level = null, backgroundImg = null, textBox = null;
+	private BufferedImage level = null, backgroundImg = null, menuImg = null, textBox = null;
 
 	// Object
 	Handler handler;
 	Inventory inventory;
 	Camera cam;
 	static Texture tex;
+	static STATE State = STATE.MENU;
 	Sound sound;
+	Menu menu;
 
 	Random rand = new Random();
+	
+	private enum STATE {
+		MENU,
+		GAME
+	}
+	
+	//private STATE State = 
 
 	private void init() {
 		requestFocus();
@@ -53,26 +62,27 @@ public class Game extends Canvas implements Runnable {
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/Stage 1.png"); //loading the level
-		backgroundImg = loader.loadImage("/Cinematic 1 - Paul.jpg"); //loading background
 		
-		//Here we need to instantiate a new textbox with visibility false
-		//Then, upon pressing space, textbox becomes visible, aka renders
-		//When space is pressed again, the textbox goes away, unless it spawns a smaller text box
+		backgroundImg = loader.loadImage("/Cinematic 1 - Paul.jpg"); //loading background
+		menuImg = loader.loadImage("/TitleScreen.png"); //loading menu
+		
 		textBox = loader.loadImage("/TextBox.png");
 		
 		handler = new Handler();
-		inventory = new Inventory();
-		
 		cam = new Camera(0, 0);
+		menu = new Menu(menuImg);
+		
+		inventory = new Inventory();
 		
 		LoadImageLevel(level);
 		
-		try {
-			sound.playSound();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (State == STATE.GAME) {
+			try {
+				sound.playSound();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 		
 		this.addKeyListener(new KeyInput(handler));
 	}
@@ -127,13 +137,16 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		handler.tick();
+		if (State == STATE.GAME) {
 		
-		//working camera
-		for (int i = 0; i < handler.gObject.size(); i++) {
-			if(handler.gObject.get(i).getId() == ObjectId.Player)
-				cam.tick(handler.gObject.get(i));
-				
+			handler.tick();
+			
+			//working camera
+			for (int i = 0; i < handler.gObject.size(); i++) {
+				if(handler.gObject.get(i).getId() == ObjectId.Player)
+					cam.tick(handler.gObject.get(i));
+					
+			}
 		}
 	}
 
@@ -149,22 +162,28 @@ public class Game extends Canvas implements Runnable {
 		
 		Graphics2D g2d = (Graphics2D) g;
 
-		// //////////////////////////////////
-		
-		// DRAW HERE
-		g.setColor(Color.black);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		
-		g.drawImage(backgroundImg, (int) (0 * cam.getX()), (int) (0 * cam.getY()), this);		
-		
-		g2d.translate(cam.getX(), cam.getY()); //begin of cam
+		if (State == STATE.GAME) {
+			// //////////////////////////////////
 			
+			// DRAW HERE
+			g.setColor(Color.black);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			
+			g.drawImage(backgroundImg, (int) (0 * cam.getX()), (int) (0 * cam.getY()), this);		
+			
+			g2d.translate(cam.getX(), cam.getY()); //begin of cam
+				
+			
+				handler.render(g);
+			
+			g2d.translate(-cam.getX(), -cam.getY()); //end of cam
+			
+			// //////////////////////////////////
+		}
 		
-			handler.render(g);
-		
-		g2d.translate(-cam.getX(), -cam.getY()); //end of cam
-		
-		// //////////////////////////////////
+		else if (State == STATE.MENU) {
+			menu.render(g);
+		}
 
 		g.dispose();
 		bs.show();
@@ -329,6 +348,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public static Texture getInstance() {
 		return tex;
+	}
+	
+	public STATE getState() {
+		return State;
 	}
 
 	public static void main(String args[]) {
