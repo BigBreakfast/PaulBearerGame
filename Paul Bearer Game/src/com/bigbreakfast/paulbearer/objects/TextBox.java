@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -26,6 +27,8 @@ public class TextBox extends GameObject {
 	private List<String> inventoryItemNames = new ArrayList<String>();
 	private List<Item> inventoryItems;
 	
+	private BufferedImage characterImg;
+	
 	public int selected = 0;
 	private boolean visible;
 	private String boxType;
@@ -42,15 +45,23 @@ public class TextBox extends GameObject {
 		this.boxType = boxType;
 		this.setTextBoxType(boxType);
 		
-		if (boxType == "InventoryBox") {
-			text = "Inventory";
-		}
-		
+		if (boxType == "InventoryBox") text = "Inventory";
 		
 		if (boxType == "DialogBox")	text = "Dialog";		
 		if (boxType == "Lootable") text = "Lootable";		
 		if (boxType == "QuitConfirmationBox") text = "Exit The Game?";		
 		if (boxType == "SaveConfirmationBox") text = "Save The Game?";
+	}
+	
+	public TextBox(float x, float y, String boxType, BufferedImage characterImg, List<Item> inventoryItems, ObjectId id) {
+		super(x, y, id);
+		this.visible = true;
+		this.boxType = boxType;
+		this.setTextBoxType(boxType);
+		this.setInventoryItems(inventoryItems);
+		
+		this.characterImg = characterImg;
+		
 	}
 	
 	public TextBox(float x, float y, String boxType, List<Item> inventoryItems, ObjectId id) {
@@ -60,10 +71,7 @@ public class TextBox extends GameObject {
 		this.setTextBoxType(boxType);
 		this.setInventoryItems(inventoryItems);
 		
-		if (boxType == "InventoryBox") {
-			text = "Inventory";
-		}
-		
+		if (boxType == "InventoryBox") text = "Inventory";
 		
 		if (boxType == "DialogBox")	text = "Paul found " + inventoryItems.get(inventoryItems.size() - 1).getItemName() + "!";		
 		if (boxType == "Lootable") text = "Lootable";		
@@ -91,13 +99,15 @@ public class TextBox extends GameObject {
 		//DialogBox
 		else if (this.boxType == "DialogBox") {
 		
-			
-			
 			//Text
 			g.drawString(text, calcXPosition("MAINTEXT", x), calcYPosition("MAINTEXT", y));
 		}
 		
-		else if (this.boxType == "PartyBox") {}
+		else if (this.boxType == "PartyBox") {
+			
+			//character image
+			g.drawImage(characterImg, calcXPosition("ListChoices", x), calcYPosition("ListChoices", y), null);
+		}
 		
 		//InventoryBox
 		else if (this.boxType == "InventoryBox") {
@@ -183,6 +193,9 @@ public class TextBox extends GameObject {
 		if (type == "DialogBox") 
 			return Game.WIDTH;
 		
+		if (type == "PartyBox")
+			return Game.WIDTH;
+		
 		if (type == "StartMenu") 
 			return Game.WIDTH/3;
 		
@@ -206,6 +219,9 @@ public class TextBox extends GameObject {
 		if (type == "DialogBox") 
 			return Game.HEIGHT/3;
 		
+		if (type == "PartyBox")
+			return Game.HEIGHT;
+		
 		if (type == "StartMenu") 
 			return Game.HEIGHT;
 		
@@ -227,6 +243,9 @@ public class TextBox extends GameObject {
 	private int calcXPosition(String type, float x) {
 		
 		if (type == "DialogBox") 
+			return (int) (x - (Game.WIDTH/2) + 16);
+		
+		if (type == "PartyBox")
 			return (int) (x - (Game.WIDTH/2) + 16);
 		
 		if (type == "StartMenu") 
@@ -262,6 +281,9 @@ public class TextBox extends GameObject {
 		
 		if (type == "DialogBox") 
 			return (int) (y + (Game.HEIGHT/2 - Game.HEIGHT/3));
+		
+		if (type == "PartyBox")
+			return (int) (y - (Game.HEIGHT/2));
 		
 		if (type == "StartMenu") 
 			return (int) (y - (Game.HEIGHT/2));
@@ -353,6 +375,12 @@ public class TextBox extends GameObject {
 	public List<String> getInventoryItemNames() {
 		
 		return this.inventoryItemNames;
+	}
+
+	@Override
+	public BufferedImage getObjectImage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

@@ -2,6 +2,7 @@ package com.bigbreakfast.paulbearer.objects;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import com.bigbreakfast.paulbearer.framework.GameObject;
@@ -46,6 +47,12 @@ public class LootableItem extends GameObject {
 	public void tick(LinkedList<GameObject> gObject) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public BufferedImage getObjectImage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

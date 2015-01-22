@@ -57,7 +57,8 @@ public class Game extends Canvas implements Runnable {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		level = loader.loadImage("/Stage 1.png"); //loading the level
 		
-		backgroundImg = loader.loadImage("/Cinematic 1 - Paul.jpg"); //loading background
+		//backgroundImg = loader.loadImage("/Cinematic 1 - Paul.jpg"); //loading background
+		backgroundImg = loader.loadImage("/Undertaker Head.png"); //loading background
 		menuImg = loader.loadImage("/TitleScreen.png"); //loading menu
 		textBox = loader.loadImage("/TextBox.png");
 		
@@ -152,7 +153,7 @@ public class Game extends Canvas implements Runnable {
 			try {
 				
 				//if (sound.isPlaying())
-					sound.playSound();
+					//sound.playSound();
 			}
 			
 			catch (Exception e) {
@@ -177,7 +178,8 @@ public class Game extends Canvas implements Runnable {
 			// //////////////////////////////////
 			
 			// DRAW HERE
-			g.setColor(Color.black);
+			//g.setColor(Color.black);
+			g.setColor(new Color(79, 40, 135));
 			g.fillRect(0, 0, getWidth(), getHeight());
 			
 			g.drawImage(backgroundImg, (int) (0 * cam.getX()), (int) (0 * cam.getY()), this);		
@@ -279,7 +281,6 @@ public class Game extends Canvas implements Runnable {
 		}
 		//Loads character last in order to have render priority (rendered last)
 		LoadInventory();
-		
 		LoadCharacter(image);
 		
 		//LoadTextBox(0);
@@ -303,7 +304,8 @@ public class Game extends Canvas implements Runnable {
 				int blue = (pixel) & 0xff;				
 				
 				if (red == 0 && green == 0 && blue == 255) { //blue pixel //player
-					handler.addObject(new Player(xx*32, yy*32, handler, inventory, ObjectId.Player));
+					//handler.addObject(new Player(xx*32, yy*32, handler, inventory, ObjectId.Player));
+					handler.addObject(new Player(xx*32, yy*32, "Paul", handler, inventory, ObjectId.Player));
 					System.out.println(xx*32 + " " + yy*32 + " ObjectId.Player");
 				}
 			}
@@ -326,9 +328,9 @@ public class Game extends Canvas implements Runnable {
 		
 		handler.addInventory(inventory);
 		
-		for (int i = 0; i < inventory.getInventoryItems().size(); i++) {
-			System.out.println(inventory.getInventoryItems().get(i));
-		}
+//		for (int i = 0; i < inventory.getInventoryItems().size(); i++) {
+//			System.out.println(inventory.getInventoryItems().get(i));
+//		}
 		
 	}
 	

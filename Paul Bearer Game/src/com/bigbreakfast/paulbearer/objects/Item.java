@@ -16,8 +16,6 @@ import com.bigbreakfast.paulbearer.window.Handler;
 
 public class Item {
 	
-	//Handler handler;
-	
 	private String itemName;
 	private int quantity;
 	//private List<ItemAttributes> itemAttributes;

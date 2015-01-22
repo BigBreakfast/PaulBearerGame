@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import com.bigbreakfast.paulbearer.framework.GameObject;
@@ -11,6 +12,7 @@ import com.bigbreakfast.paulbearer.framework.ObjectId;
 import com.bigbreakfast.paulbearer.framework.Texture;
 import com.bigbreakfast.paulbearer.framework.Facing;
 import com.bigbreakfast.paulbearer.window.Animation;
+import com.bigbreakfast.paulbearer.window.BufferedImageLoader;
 import com.bigbreakfast.paulbearer.window.Game;
 import com.bigbreakfast.paulbearer.window.Handler;
 
@@ -21,6 +23,7 @@ public class Player extends GameObject {
 	private Handler handler;
 	private Inventory inventory;
 	private LootableItem lootableItem;
+	private BufferedImage characterImage;
 
 	Texture tex = Game.getInstance();
 
@@ -32,10 +35,31 @@ public class Player extends GameObject {
 	private Animation playerIdleLeft;
 	private Animation playerIdleDown;
 
+	private String characterName;
+
 	public Player(float x, float y, Handler handler, Inventory inventory, ObjectId id) {
 		super(x, y, id);
 		this.handler = handler;
 		this.inventory = inventory;
+		this.facing = Facing.Right;
+
+		playerWalkRight = new Animation(15, tex.player[0], tex.player[1]);
+		playerWalkLeft = new Animation(15, tex.player[2], tex.player[3]);
+		playerIdleRight = new Animation(15, tex.player[0], tex.player[4]);
+		playerIdleLeft = new Animation(15, tex.player[2], tex.player[5]);
+		playerWalkDown = new Animation(15, tex.player[7], tex.player[8]);
+		playerIdleDown = new Animation(15, tex.player[6], tex.player[9]);
+
+	}
+	
+	public Player(float x, float y, String characterName, Handler handler, Inventory inventory, ObjectId id) {
+		super(x, y, id);
+		this.handler = handler;
+		this.inventory = inventory;
+		this.facing = Facing.Right;
+		this.characterName = characterName;
+		
+		getCharacterImage(characterName);
 
 		playerWalkRight = new Animation(15, tex.player[0], tex.player[1]);
 		playerWalkLeft = new Animation(15, tex.player[2], tex.player[3]);
@@ -207,6 +231,14 @@ public class Player extends GameObject {
 		}
 	}
 	
+	private BufferedImage getCharacterImage(String characterName) {
+		
+		BufferedImageLoader loader = new BufferedImageLoader(); 
+		this.characterImage = loader.loadImage("/Paul Face.png");
+		return this.characterImage;
+		
+	}
+	
 	public void removeLootableItem() {
 		this.lootableItem = null;
 		this.setColliding(false);
@@ -283,5 +315,10 @@ public class Player extends GameObject {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public BufferedImage getObjectImage() {
+		return this.characterImage;
 	}
 }

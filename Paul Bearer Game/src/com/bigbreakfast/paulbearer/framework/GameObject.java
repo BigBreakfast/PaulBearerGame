@@ -2,6 +2,7 @@ package com.bigbreakfast.paulbearer.framework;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 public abstract class GameObject {
@@ -11,6 +12,8 @@ public abstract class GameObject {
 	protected ObjectId id;
 	//protected int facing = 1;
 	protected Facing facing;
+	
+	protected BufferedImage objectImage;
 
 	protected boolean falling = true;
 	protected boolean jumping = false;
@@ -40,6 +43,12 @@ public abstract class GameObject {
 	public Facing getFacing() {
 		return facing;
 	}
+	
+	public void setObjectImage(BufferedImage objectImage) {
+		this.objectImage = objectImage;
+	}
+	
+	public abstract BufferedImage getObjectImage();
 	
 //	public int getFacing() {
 //		return facing;

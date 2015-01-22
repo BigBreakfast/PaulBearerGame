@@ -2,6 +2,7 @@ package com.bigbreakfast.paulbearer.framework;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 import com.bigbreakfast.paulbearer.objects.Item;
 import com.bigbreakfast.paulbearer.objects.Player;
@@ -17,6 +18,7 @@ public class KeyInput extends KeyAdapter {
 	Menu menu = Game.getMenu();
 	private float playerX;
 	private float playerY;
+	private BufferedImage playerImage;
 	
 	public KeyInput(Handler handler){
 		this.handler = handler;
@@ -54,6 +56,7 @@ public class KeyInput extends KeyAdapter {
 					
 					playerX = player.getX();
 					playerY = player.getY();
+					playerImage = player.getObjectImage();
 							
 					if(handler.hasTextBox() == 0) {
 						
@@ -70,7 +73,7 @@ public class KeyInput extends KeyAdapter {
 						System.out.println("Player Colliding with " + player.getLootableItem().getId().name());
 						
 						//addItem removeItem
-						handler.getInventory().addItem(new Item("Small Key", 2, 0, 0, 0, ObjectId.Item));
+						handler.getInventory().addItem(new Item("Small Key", 1, 0, 0, 0, ObjectId.Item));
 						handler.removeObject(player.getLootableItem());
 						player.removeLootableItem();
 						
@@ -152,7 +155,7 @@ public class KeyInput extends KeyAdapter {
 							if (selection == 0) { //Party
 								System.out.println(handler.getTextBox("StartMenu").getStartMenuChoices().get(selection) + " Party Selected");
 								handler.removeObject(tempObject);
-								handler.addObject(new TextBox(playerX, playerY, "PartyBox", ObjectId.TextBox));
+								handler.addObject(new TextBox(playerX, playerY, "PartyBox", playerImage, handler.getInventory().getInventoryItems(), ObjectId.TextBox));
 								break;
 							}
 							if (selection == 1) { //Inventory
@@ -184,6 +187,30 @@ public class KeyInput extends KeyAdapter {
 								handler.addObject(new TextBox(playerX, playerY, "QuitConfirmationBox", ObjectId.TextBox));
 								break;
 							}
+						}
+					}
+					
+					//If the textBox is a PartyBox, Display character stats
+					if (tempObject.textBoxType == "PartyBox" && handler.hasTextBox() == 1) {
+						
+						if (key == KeyEvent.VK_W) {
+							handler.getTextBox("PartyBox").selected--;
+							if (handler.getTextBox("PartyBox").selected < 0)
+								handler.getTextBox("PartyBox").selected = handler.getTextBox("PartyBox").getInventoryItemNames().size() - 1;
+						}
+						
+						if (key == KeyEvent.VK_S) {
+							handler.getTextBox("PartyBox").selected++;
+							if (handler.getTextBox("PartyBox").selected >= handler.getTextBox("PartyBox").getInventoryItemNames().size())	
+								handler.getTextBox("PartyBox").selected = 0;
+						}
+						
+						//navigate backward
+						if (key == KeyEvent.VK_A) {
+							System.out.println("Party Back Selected");
+							handler.removeObject(tempObject);
+							handler.addObject(new TextBox(playerX, playerY, "StartMenu", ObjectId.TextBox));
+							break;
 						}
 					}
 					
