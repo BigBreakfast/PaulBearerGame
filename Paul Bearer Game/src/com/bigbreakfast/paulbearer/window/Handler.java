@@ -10,12 +10,12 @@ import com.bigbreakfast.paulbearer.objects.Inventory;
 
 public class Handler {
 	
-	private Inventory inventory;
+	public static LinkedList<GameObject> gObject = new LinkedList<GameObject>();
+	private static Inventory inventory;
+	private static GameObject tempObject;
+	private static TextBox textBox;
 	
-	public LinkedList<GameObject> gObject = new LinkedList<GameObject>();
-	
-	private GameObject tempObject;
-	private TextBox textBox;
+	public Handler() {}
 	
 	public void tick() {
 		for (int i = 0; i < gObject.size(); i++) {
@@ -25,7 +25,7 @@ public class Handler {
 		}
 	}
 	
-	public void render(Graphics g) {
+	public void render(final Graphics g) {
 		
 		for (int i = 0; i < gObject.size(); i++) {
 			
@@ -34,32 +34,20 @@ public class Handler {
 		}
 	}
 	
-	public void addObject(GameObject gObject) {
-		
-//		if (gObject.getId() == ObjectId.TextBox) {
-//			//get some text from state machine / xml
-//			//TextFeeder.getState();
-//		}
-		
-		this.gObject.add(gObject);
+	public void addObject(final GameObject gObject) {
+		Handler.gObject.add(gObject);
 	}
 	
-	public void addInventory(Inventory inventory) {
-		
-		this.inventory = inventory;
+	public void addInventory(final Inventory inventory) {
+		Handler.inventory = inventory;
 	}
 	
 	public Inventory getInventory() {
-		return this.inventory;
+		return Handler.inventory;
 	}
 	
-	public void removeObject(GameObject gObject) {
-		
-		//Idea was, when you pick up an item, before it derenders it, it creates a copy in Inventory.
-		//Then you can go ahead and derender it.
-//		if (gObject.getId() == ObjectId.Item) {
-//		}
-		this.gObject.remove(gObject);
+	public void removeObject(final GameObject gObject) {
+		Handler.gObject.remove(gObject);
 	}
 	
 	public int hasTextBox() {
@@ -76,29 +64,30 @@ public class Handler {
 	}
 	
 	public String getTextBoxType() {
-		return this.textBox.getBoxType();
+		return Handler.textBox.getBoxType();
 	}
 	
-	public TextBox getTextBox(String textBoxType) {
+	public TextBox getTextBox(final String textBoxType) {
 		
 		for (int i = 0; i < gObject.size(); i++) {
 			if (gObject.get(i).getId() == ObjectId.TextBox) {
 				
 				if (hasTextBox() == 1) {
 					try {
-						return this.textBox = (TextBox) gObject.get(i);
+						//return this.textBox = (TextBox) gObject.get(i);
+						Handler.textBox = (TextBox) gObject.get(i);
 					}
 					catch(Exception e) {
 						e.printStackTrace();
-						new Exception("handler's TextBox is null!");
 					}
 				}
 				
 				else if (hasTextBox() > 1 && gObject.get(i).getTextBoxType() == textBoxType) {
-					return this.textBox = (TextBox) gObject.get(i);
+					//return this.textBox = (TextBox) gObject.get(i);
+					Handler.textBox = (TextBox) gObject.get(i);
 				}
 			}
 		}
-		return null;
+		return Handler.textBox;
 	}
 }

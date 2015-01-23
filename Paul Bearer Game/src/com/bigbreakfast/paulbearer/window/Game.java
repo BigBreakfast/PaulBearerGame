@@ -17,7 +17,6 @@ import com.bigbreakfast.paulbearer.objects.Floor;
 import com.bigbreakfast.paulbearer.objects.Inventory;
 import com.bigbreakfast.paulbearer.objects.Item;
 import com.bigbreakfast.paulbearer.objects.Player;
-import com.bigbreakfast.paulbearer.objects.TextBox;
 import com.bigbreakfast.paulbearer.objects.LootableItem;
 import com.bigbreakfast.paulbearer.sound.Sound;
 
@@ -33,16 +32,16 @@ public class Game extends Canvas implements Runnable {
 	
 	public static int WIDTH, HEIGHT;
 	
-	private BufferedImage level = null, backgroundImg = null, menuImg = null, textBox = null;
+	private BufferedImage level, backgroundImg, menuImg;
 
 	// Object
-	Handler handler;
-	Inventory inventory;
-	Camera cam;
-	static Texture tex;
-	static State state;
-	Sound sound;
-	static Menu menu;
+	private Handler handler;
+	private Inventory inventory;
+	private Camera cam;
+	private static Texture tex;
+	private static State state;
+	private Sound sound;
+	private static Menu menu;
 
 	Random rand = new Random();
 
@@ -60,7 +59,6 @@ public class Game extends Canvas implements Runnable {
 		//backgroundImg = loader.loadImage("/Cinematic 1 - Paul.jpg"); //loading background
 		backgroundImg = loader.loadImage("/Undertaker Head.png"); //loading background
 		menuImg = loader.loadImage("/TitleScreen.png"); //loading menu
-		textBox = loader.loadImage("/TextBox.png");
 		
 		state = State.MENU;
 		
@@ -76,7 +74,7 @@ public class Game extends Canvas implements Runnable {
 		
 		inventory = new Inventory();
 		
-		LoadImageLevel(level);
+		loadImageLevel(level);
 		
 //		if (state == State.GAME) {
 //			try {
@@ -101,7 +99,7 @@ public class Game extends Canvas implements Runnable {
 
 	public void run() {
 
-		System.out.println("Thread has begun");
+		//System.out.println("Thread has begun");
 
 		init();
 		this.requestFocus();
@@ -111,8 +109,8 @@ public class Game extends Canvas implements Runnable {
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
-		int updates = 0;
-		int frames = 0;
+		//int updates = 0;
+		//int frames = 0;
 
 		while (running) {
 			long now = System.nanoTime();
@@ -121,19 +119,19 @@ public class Game extends Canvas implements Runnable {
 
 			while (delta >= 1) {
 				tick();
-				updates++;
+				//updates++;
 				delta--;
 			}
 			render();
-			frames++;
+			//frames++;
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				// fps = frames;
 				// ticks = updates;
 				//System.out.println("FPS: " + frames + " TICKS: " + updates);
-				frames = 0;
-				updates = 0;
+				//frames = 0;
+				//updates = 0;
 			}
 		}
 	}
@@ -203,11 +201,11 @@ public class Game extends Canvas implements Runnable {
 
 	}
 	
-	private void LoadImageLevel(BufferedImage image){
+	private void loadImageLevel(BufferedImage image){ // NOPMD by pj_mcmanus10 on 1/22/15 3:33 PM
 		int w = image.getWidth();
 		int h = image.getHeight();
 		
-		System.out.println("width, height: " + w + h);
+		//System.out.println("width, height: " + w + h);
 		
 		for(int xx = 0; xx < w; xx++) {
 			
@@ -280,39 +278,37 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 		//Loads character last in order to have render priority (rendered last)
-		LoadInventory();
-		LoadCharacter(image);
-		
-		//LoadTextBox(0);
+		loadInventory();
+		loadCharacter(image);
 	}
 	
 	//Loads character separately in order to have render priority (rendered last)
-	private void LoadCharacter(BufferedImage image) {
+	private void loadCharacter(BufferedImage image) { // NOPMD by pj_mcmanus10 on 1/22/15 3:23 PM
 		
 		int w = image.getWidth();
 		int h = image.getHeight();
 		
-		System.out.println("width, height: " + w + h);
+		//System.out.println("width, height: " + w + h);
 		
 		for(int xx = 0; xx < w; xx++) {
 			
 			for (int yy = 0; yy < h; yy++) {
 		
-				int pixel = image.getRGB(xx, yy);
-				int red = (pixel >> 16) & 0xff;
-				int green = (pixel >> 8) & 0xff;
-				int blue = (pixel) & 0xff;				
+				final int pixel = image.getRGB(xx, yy);
+				final int red = (pixel >> 16) & 0xff;
+				final int green = (pixel >> 8) & 0xff;
+				final int blue = (pixel) & 0xff;				
 				
 				if (red == 0 && green == 0 && blue == 255) { //blue pixel //player
 					//handler.addObject(new Player(xx*32, yy*32, handler, inventory, ObjectId.Player));
 					handler.addObject(new Player(xx*32, yy*32, "Paul", handler, inventory, ObjectId.Player));
-					System.out.println(xx*32 + " " + yy*32 + " ObjectId.Player");
+					//System.out.println(xx*32 + " " + yy*32 + " ObjectId.Player");
 				}
 			}
 		}
 	}
 	
-	private void LoadInventory() {
+	private void loadInventory() { // NOPMD by pj_mcmanus10 on 1/22/15 3:26 PM
 		
 		Item i1 = new Item("Cockroach", 20, 0, 1, 0, ObjectId.Item);
 		inventory.addItem(i1);
@@ -328,35 +324,6 @@ public class Game extends Canvas implements Runnable {
 		
 		handler.addInventory(inventory);
 		
-//		for (int i = 0; i < inventory.getInventoryItems().size(); i++) {
-//			System.out.println(inventory.getInventoryItems().get(i));
-//		}
-		
-	}
-	
-	//set up to work at load time. do i need?
-	public void LoadTextBox(int type) {
-		
-		for (int i = 0; i < handler.gObject.size(); i++) {
-			
-			if (handler.gObject.get(i).getId() == ObjectId.Player) {
-				
-				int playerX = (int) handler.gObject.get(i).getX();
-				int playerY = (int) handler.gObject.get(i).getY();
-				
-				//works before cam adjustment
-				//with cam adjustment
-				//workshandler.addObject(new TextBox(width + 16, height - 16, type, ObjectId.TextBox));
-				
-				
-				//handler.addObject(new TextBox(playerX, playerY, "StartMenu", handler, ObjectId.TextBox));
-				//handler.addObject(new TextBox(Game.WIDTH, Game.HEIGHT/2, "StartMenu", handler, ObjectId.TextBox));
-				System.out.println(playerX + " " + playerY + " ObjectId.TextBox");
-				
-			}
-		}
-		
-		//handler.addObject(new TextBox(cam.getX(), cam.getY(), type, ObjectId.TextBox));
 	}
 	
 	public static Texture getInstance() {
@@ -367,8 +334,8 @@ public class Game extends Canvas implements Runnable {
 		return state;
 	}
 	
-	public static void setState(State inState) {
-		state = inState;
+	public static void setState(State newState) {
+		state = newState;
 	}
 	
 	public static Menu getMenu() {
